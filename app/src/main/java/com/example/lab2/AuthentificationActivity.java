@@ -8,6 +8,9 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -48,12 +51,18 @@ public class AuthentificationActivity extends AppCompatActivity {
                             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                             String s = readStream(in);
                             Log.i("JFL", s);
+
+                            JSONObject auth = new JSONObject(s);
+                            String res = auth.getString("authenticated");
+
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    result.setText(s);
+                                    result.setText(res);
                                 }
                             });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         } finally {
                             urlConnection.disconnect();
                         }
