@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,22 +18,26 @@ import java.net.URL;
 
 public class AuthentificationActivity extends AppCompatActivity {
 
+    EditText name;
+    EditText password;
+    TextView result;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
+
         findViewById(R.id.AuthButton).setOnClickListener(v->{
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    name = findViewById(R.id.NameLogin);
+                    password = findViewById(R.id.PasswordLogin);
+                    result = findViewById(R.id.textViewResult);
                     URL url = null;
                     try {
-                        EditText name = findViewById(R.id.NameLogin);
-                        EditText password = findViewById(R.id.PasswordLogin);
 
                         String credentials = name.getText().toString() + ":" + password.getText().toString();
-
-
 
                         url = new URL("https://httpbin.org/basic-auth/bob/sympa");
                         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -43,6 +48,12 @@ public class AuthentificationActivity extends AppCompatActivity {
                             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                             String s = readStream(in);
                             Log.i("JFL", s);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    result.setText(s);
+                                }
+                            });
                         } finally {
                             urlConnection.disconnect();
                         }
