@@ -2,9 +2,17 @@ package com.example.flickr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +30,34 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            new AsyncFlickrJSONData().execute("https://www.flickr.com/services/feeds/photos_public.gne?tags=trees&format=json");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    JSONObject jsonObject;
+                    String link = null;
+
+                    try {
+                        jsonObject = new AsyncFlickrJSONData().execute("https://www.flickr.com/services/feeds/photos_public.gne?tags=trees&format=json").get();
+                        link = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m");
+                    } catch (ExecutionException | JSONException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    ImageView im = findViewById(R.id.image);
+                    AsyncTask<String, Void, Bitmap> as = new AsyncBitmapDownloader().execute(link);
+                    try {
+                        im.setImageBitmap(as.get());
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         }
     }
 }

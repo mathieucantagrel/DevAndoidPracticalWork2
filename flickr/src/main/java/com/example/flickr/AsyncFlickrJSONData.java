@@ -43,6 +43,9 @@ public class AsyncFlickrJSONData extends AsyncTask<String, Void, JSONObject> {
         super.onPostExecute(jsonObject);
         try {
             Log.i("LOG JSON", jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m"));
+
+            new AsyncBitmapDownloader().execute(jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
