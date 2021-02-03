@@ -20,22 +20,28 @@ public class AuthentificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
         findViewById(R.id.AuthButton).setOnClickListener(v->{
-            URL url = null;
-            try {
-                url = new URL("http://www.android.com/");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                try {
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    String s = readStream(in);
-                    Log.i("JFL", s);
-                } finally {
-                    urlConnection.disconnect();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    URL url = null;
+                    try {
+                        url = new URL("https://www.android.com/");
+                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                        try {
+                            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                            String s = readStream(in);
+                            Log.i("JFL", s);
+                        } finally {
+                            urlConnection.disconnect();
+                        }
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            }).start();
+
         });
     }
 
