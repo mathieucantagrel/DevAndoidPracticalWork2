@@ -2,6 +2,7 @@ package com.example.flickr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.getImageButton).setOnClickListener(new GetImageOnClickLister());
+
+        findViewById(R.id.button).setOnClickListener(v->{
+            Intent ListActivity = new Intent(this, com.example.flickr.ListActivity.class);
+            startActivity(ListActivity);
+        });
     }
 
     public class GetImageOnClickLister implements View.OnClickListener{
@@ -60,4 +66,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
 }
