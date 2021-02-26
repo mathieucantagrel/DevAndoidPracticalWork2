@@ -51,7 +51,6 @@ public class MyAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.bitmaplayout, parent, false);
         }
 
-//        RequestQueue queue = MySingleton.getInstance(ViewGroup.getContext()).getRequestQueue();
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
 
         Response.Listener<Bitmap> rep_listener = response -> {
