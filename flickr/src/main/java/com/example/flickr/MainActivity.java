@@ -44,14 +44,16 @@ public class MainActivity extends AppCompatActivity {
                     String link = null;
 
                     try {
+                        //getting the json file from the flickr API
                         jsonObject = new AsyncFlickrJSONData().execute("https://www.flickr.com/services/feeds/photos_public.gne?tags=trees&format=json").get();
-                        link = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m");
+                        link = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m"); //parsing the json to get the link of the image
                     } catch (ExecutionException | JSONException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
+                    //modifying the view with the new image
                     ImageView im = findViewById(R.id.image);
                     AsyncTask<String, Void, Bitmap> as = new AsyncBitmapDownloader().execute(link);
                     try {

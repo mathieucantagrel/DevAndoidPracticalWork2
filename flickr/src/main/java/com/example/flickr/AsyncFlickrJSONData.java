@@ -20,11 +20,11 @@ public class AsyncFlickrJSONData extends AsyncTask<String, Void, JSONObject> {
         URL url = null;
         try {
             url = new URL(strings[0]);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //connecting to the url to download the image
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 String s = readStream(in);
-                return new JSONObject(s.substring(15, s.length()-1));
+                return new JSONObject(s.substring(15, s.length()-1)); //returning the object that was given by the API
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
@@ -44,12 +44,14 @@ public class AsyncFlickrJSONData extends AsyncTask<String, Void, JSONObject> {
         try {
             Log.i("LOG JSON", jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m"));
 
+            //parsing the JSON to get the url to the image and give it to the downloader
             new AsyncBitmapDownloader().execute(jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
 
     private String readStream(InputStream is) {
         try {

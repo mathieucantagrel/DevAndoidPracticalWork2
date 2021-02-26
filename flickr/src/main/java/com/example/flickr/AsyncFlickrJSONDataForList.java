@@ -28,7 +28,7 @@ public class AsyncFlickrJSONDataForList extends AsyncTask<String, Void, JSONObje
         URL url = null;
         try {
             url = new URL(strings[0]);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //connecting to the url to get the json data
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 String s = readStream(in);
@@ -53,17 +53,16 @@ public class AsyncFlickrJSONDataForList extends AsyncTask<String, Void, JSONObje
         try {
             JSONArray jsonArray = jsonObject.getJSONArray("items");
 
+            //looping on every object of the json file
             for (int i=0; i<jsonArray.length(); i++){
                 adapter.add(jsonArray.getJSONObject(i).getJSONObject("media").getString("m"));
             }
 
-            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged(); //notifying the adapter that the view needs to be modified
 
         }catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private String readStream(InputStream is) {

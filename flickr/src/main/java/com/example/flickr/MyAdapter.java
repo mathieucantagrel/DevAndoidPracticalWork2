@@ -46,6 +46,7 @@ public class MyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        //if the convert view does not exist we create one and inflate it
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.bitmaplayout, parent, false);
@@ -57,9 +58,10 @@ public class MyAdapter extends BaseAdapter {
             imageView.setImageBitmap(response);
         };
 
+        //creating the request to inflate the view
         ImageRequest request = new ImageRequest(vector.get(position), rep_listener, 0, 0, ImageView.ScaleType.CENTER_CROP, null, null);
 
-        MySingleton.getInstance(parent.getContext()).addToRequestQueue(request);
+        MySingleton.getInstance(parent.getContext()).addToRequestQueue(request); //sending the request to the Singleton
 
         return convertView;
     }

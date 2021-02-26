@@ -30,6 +30,7 @@ public class AuthentificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
 
+        //the authentification is an asynchronous process
         findViewById(R.id.AuthButton).setOnClickListener(v->{
             new Thread(new Runnable() {
                 @Override
@@ -42,8 +43,8 @@ public class AuthentificationActivity extends AppCompatActivity {
 
                         String credentials = name.getText().toString() + ":" + password.getText().toString();
 
-                        url = new URL("https://httpbin.org/basic-auth/bob/sympa");
-                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                        url = new URL("https://httpbin.org/basic-auth/bob/sympa"); //Link to the API
+                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //opening the URL connection
 
                         String basicAuth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.NO_WRAP);
                         urlConnection.setRequestProperty ("Authorization", basicAuth);
@@ -52,9 +53,11 @@ public class AuthentificationActivity extends AppCompatActivity {
                             String s = readStream(in);
                             Log.i("JFL", s);
 
+                            //the API is sending back a JSON file with the response
                             JSONObject auth = new JSONObject(s);
                             String res = auth.getString("authenticated");
 
+                            //Modifing the UI requires a special thread
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -77,6 +80,7 @@ public class AuthentificationActivity extends AppCompatActivity {
         });
     }
 
+    //stransform a string to be convertible to JSON
     private String readStream(InputStream is) {
         try {
             ByteArrayOutputStream bo = new ByteArrayOutputStream();
